@@ -9,10 +9,13 @@
   "permissions": [
     "storage",
     "activeTab",
-    "scripting"
+    "scripting",
+    "tabs",
+    "unlimitedStorage"
   ],
-  "action": {
+  "browser_action": {
     "default_popup": "popup.html",
+    "default_title": "styLifter",
     "default_icon": {
       "16": "/images/get_started16.png",
       "32": "/images/get_started32.png",

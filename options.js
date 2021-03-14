@@ -43,8 +43,22 @@ function constructOptions(buttonColors) {
     }
   });
 }
+makeWatchListInterfact()
+function makeWatchListInterfact() {
+  chrome.storage.sync.get(["watch"], ({ watch }) => {
+    const ul = document.createElement("ul")
+    ul.style.color = "white"
+    watch.forEach(term => {
+      const li = document.createElement("li")
+      li.textContent = term
+      ul.appendChild(li)
+    })
+    $tableDiv.appendChild(ul)
 
-function makeList() {
+  })
+}
+
+function makeSampleList() {//TODO: This should move to a new page // might be harder than origianlly though
   chrome.storage.sync.get(["samples", "color"], ({ samples, color }) => {
     samples.forEach(element => {
       console.log(element)
@@ -63,4 +77,4 @@ function makeList() {
 }
 // Initialize the page by constructing the color options
 constructOptions(presetButtonColors);
-makeList()
+makeSampleList()
