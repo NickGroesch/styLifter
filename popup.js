@@ -42,49 +42,38 @@ async function setPageBackgroundColor() {
       //parse minified or bundled css differently
       //from  https://stackoverflow.com/questions/3326494/parsing-css-in-javascript-jquery
       //You can easily use the Browser's own CSSOM to parse CSS:
-
       var extractRulesForCssText = function (styleContent) {
-
         var doc = document.implementation.createHTMLDocument(""),
           styleElement = document.createElement("style");
-
         styleElement.textContent = styleContent;
         // the style will only be parsed once it is added to a document
         doc.body.appendChild(styleElement);
-
         return styleElement.sheet.cssRules;
       };
       const cssRules = (extractRulesForCssText(css))
       theCssRules.push(cssRules)
-      // const cssRulesLen = cssRules.length
-      // console.log(cssRules)
-      // console.log(cssRulesLen)
 
-      // for (let index = 0; index < cssRulesLen; index++) {
-      //   const rule = cssRules[index];
-      //   console.log(rule.styleMap)
-      //   console.log(typeof rule.style)
-      //   console.log(Object.keys(rule.style))
-      // }
     }
-
   })
 
-  setTimeout(() => analyzeRules(), 3000)
+  setTimeout(() => analyzeRules(), 1000)
   const analyzeRules = () => {
     theCssRules.forEach(ruleSet => {
       console.log(ruleSet.length)
       for (let index = 0; index < ruleSet.length; index++) {
         const rule = ruleSet[index];
-        console.log(rule?.href)//import rules will have an href
+        console.log("%crule", "color: orangered", rule)
+        //import rules will have an href
+        console.log("%chref for import", "color: orangered", rule?.href)
         //other style rules
-        console.log(rule)
-        console.log(rule.style)
+        const ruleSelector = rule.selectorText
+        console.log("%cstyle", "color: orangered", rule.style)
         if (rule?.style?.length) {
           for (let index = 0; index < rule?.style?.length; index++) {
             const ruleKey = rule.style[index];
-            console.log(ruleKey)
-            console.log(rule.style[ruleKey])
+            console.log(`%c${ruleKey}`, "color : blue")
+            console.log(`%c${rule.style[ruleKey]}`, 'color: aquamarine')//this seems simple
+            //console.log(rule.style.getPropertyValue(ruleKey))//this seems like it might be the long, right way
           }
         }
 
