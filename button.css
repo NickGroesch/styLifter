@@ -6,8 +6,14 @@ button {
   border: none;
   border-radius: 2px;
 }
-
+body{
+  background-color: rgba(0, 0, 0, 1 );
+}
+p{
+  color: white
+}
 button.current {
-  box-shadow: 0 0 0 2px white,
-              0 0 0 4px black;
+  box-shadow:
+              0 0 0 2px black,
+              0 0 0 4px white;
 }
