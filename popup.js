@@ -29,7 +29,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
   $openRecords.addEventListener("click", async () => { //TODO: this isn't working at all
     // https://github.com/mdn/webextensions-examples/tree/master/store-collected-images/webextension-plain
-    var creating = browser.tabs.create({
+    var creating = chrome.tabs.create({
       url: "/records.html"
     });
     creating.then(onCreated, onError);
