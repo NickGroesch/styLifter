@@ -24,6 +24,16 @@ function setPageBackgroundColor() {
   const linkNodes = document.querySelectorAll('link[rel=stylesheet]')
   linkNodes.forEach(node => {
     console.log(node.getAttribute("href"))
+    const nodesHref = node.getAttribute("href")
+    if (nodesHref.slice(0, 5) == "https") {
+      //probably cdn
+      console.log("not gonna do it")
+    } else {
+      //probably local css
+      fetch(nodesHref)
+        .then(res => res.text())
+        .then(css => console.log(css))
+    }
   })
 
 
