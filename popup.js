@@ -21,18 +21,10 @@ function setPageBackgroundColor() {
   chrome.storage.sync.get("color", ({ color }) => {
     document.body.style.backgroundColor = color;
   });
-  const headNodes = document.head.childNodes
-  const headNodesArray = Array.from(headNodes)
-  console.log(headNodesArray.filter(node => {
-    console.log(node)
-    console.log(Object.keys(node))
+  const linkNodes = document.querySelectorAll('link[rel=stylesheet]')
+  linkNodes.forEach(node => {
+    console.log(node.getAttribute("href"))
+  })
 
-    return node.localname == 'link'
-  }))
-  const headNodesLen = headNodes.length
-  for (let index = 0; index < headNodes.length; index++) {
-    const element = headNodes[index];
-    console.log(element)
-  }
 
 }
