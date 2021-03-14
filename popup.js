@@ -19,14 +19,16 @@ changeColor.addEventListener("click", async () => {
 // current page
 async function setPageBackgroundColor() {
   const thisSample = {
+    location: location.href,
     cdns: [],
     props: []
   }
   chrome.storage.sync.get("color", ({ color }) => {
     document.body.style.backgroundColor = color;
   });
-  chrome.storage.sync.get(["watch"], ({ watch }) => {
+  chrome.storage.sync.get(["watch", "samples"], ({ watch, samples }) => {
     console.log(watch)
+    console.log(samples)
     const theCssRules = []
 
     const linkNodes = document.querySelectorAll('link[rel=stylesheet]')
@@ -99,7 +101,8 @@ async function setPageBackgroundColor() {
           }
         }
         console.log(thisSample)
-        chrome.storage.sync.set({ samples: thisSample })
+        samples.push(thisSample)
+        chrome.storage.sync.set({ samples: samples })
       })
     }
 

@@ -1,4 +1,5 @@
-let page = document.getElementById("buttonDiv");
+let $buttonDiv = document.getElementById("buttonDiv");
+let $tableDiv = document.getElementById("tableDiv");
 let selectedClassName = "current";
 const presetButtonColors = ["blue", "orangered", "aquamarine", "green"];
 
@@ -38,10 +39,28 @@ function constructOptions(buttonColors) {
 
       // …and register a listener for when that button is clicked
       button.addEventListener("click", handleButtonClick);
-      page.appendChild(button);
+      $buttonDiv.appendChild(button);
     }
   });
 }
 
+function makeList() {
+  chrome.storage.sync.get(["samples", "color"], ({ samples, color }) => {
+    samples.forEach(element => {
+      console.log(element)
+      const p = document.createElement('p')
+      p.classList.add('tooltip')
+      p.textContent = element.location
+      const tooltip = document.createElement('div')
+      tooltip.classList.add('tooltiptext')
+      tooltip.textContent = "cool"
+      tooltip.style.backgroundColor = color
+      tooltip.style.color = "black"
+      p.appendChild(tooltip)
+      $tableDiv.appendChild(p);
+    });
+  })
+}
 // Initialize the page by constructing the color options
 constructOptions(presetButtonColors);
+makeList()
