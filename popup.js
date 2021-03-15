@@ -20,11 +20,13 @@ window.addEventListener('DOMContentLoaded', (event) => {
   // When the button is clicked, inject setPageBackgroundColor into current page
   $sampleSite.addEventListener("click", async () => {
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
     chrome.scripting.executeScript({
       target: { tabId: tab.id },
       function: setPageBackgroundColor,
     });
+    // const capturePromise = chrome.tabs.captureVisibleTab(tab.windowId, null, (dataUrl) => { console.log(dataUrl) });
+    // console.log(capturePromise)
+    // capturePromise.then(x => console.log(x)).catch(err => console.error(err))
   });
 
   $openRecords.addEventListener("click", async () => { //TODO: this isn't working at all
@@ -40,6 +42,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
   // The body of this function will be execuetd as a content script inside the
   // current page
   async function setPageBackgroundColor() {
+    chrome.runtime.sendMessage({ greeting: "hello" }, function (response) {
+      console.log(response.farewell);
+    });
+
     const thisSample = {
       location: location.href,
       cdns: [],
@@ -92,13 +98,13 @@ window.addEventListener('DOMContentLoaded', (event) => {
           console.log(ruleSet.length)
           for (let index = 0; index < ruleSet.length; index++) {
             const rule = ruleSet[index];
-            console.log("%crule", "color: orangered", rule)
+            //console.log("%crule", "color: orangered", rule)
             //import rules will have an href
             if (rule?.href) {
-              console.log("%chref for import", "color: green", rule?.href)
+              //console.log("%chref for import", "color: green", rule?.href)
             } else {
               //other style rules
-              console.log("%cstyle", "color: green", rule.style)
+              //console.log("%cstyle", "color: green", rule.style)
             }
             const ruleSelector = rule.selectorText
             if (rule?.style?.length) {
