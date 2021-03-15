@@ -43,7 +43,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
   // current page
   async function setPageBackgroundColor() {
     chrome.runtime.sendMessage({ greeting: "hello" }, function (response) {
-      console.log(response.farewell);
+      //console.log(response.farewell);
+      console.log(response.woohoo);
+      console.log(response.boohoo);
     });
 
     const thisSample = {

@@ -18,22 +18,29 @@ chrome.runtime.onMessage.addListener(
       "from the extension");
     console.log(sender.tab)
     if (request.greeting == "hello") {
-      capTab()
+      capTab(sendResponse)
+      // const data64 = await capTab()
+      // console.log('data64',data64)
       // const capturePromise = chrome.tabs.captureVisibleTab(null, null, (dataUrl) => { console.log(dataUrl) });
       // console.log("capturePromise", capturePromise)
-      sendResponse({ farewell: "goodbye" });
+      //sendResponse({ farewell: "goodbye" });
     }
   }
 );
+
 function onCaptured(imageUri) {
   console.log("WOOHOO!", imageUri);
 }
 
-function onError(error) {
-  console.log(`Error: ${error}`);
-}
-
-function capTab() {
+function capTab(responder) {
+  console.log(responder)
   var capturing = chrome.tabs.captureVisibleTab();
-  capturing.then(onCaptured, onError);
+  capturing.then(function (imageUri) {
+    console.log("WOOHOO!", imageUri);
+    responder({ woohoo: imageUri })
+    //return imageUri
+  }, function (error) {
+    console.log(`Error: ${error}`);
+    responder({ boohoo: error })
+  });
 }
