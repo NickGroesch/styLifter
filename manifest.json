@@ -13,7 +13,7 @@
     "tabs",
     "unlimitedStorage"
   ],
-  "browser_action": {
+  "action": {
     "default_popup": "popup.html",
     "default_title": "styLifter",
     "default_icon": {
@@ -31,6 +31,11 @@
   },
   "options_page": "options.html",
   "web_accessible_resources": [
-    "records.html"
+    {
+      "resources": [
+        "records.html"
+      ],
+      "matches": []
+    }
   ]
 }

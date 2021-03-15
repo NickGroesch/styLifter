@@ -12,7 +12,7 @@ function makeSampleList() {//TODO: This should move to a new page // might be ha
             p.textContent = element.location
             const tooltip = document.createElement('div')
             tooltip.classList.add('tooltiptext')
-            tooltip.textContent = "cool"
+            tooltip.textContent = element.watch.join(",")//TODO: make this a map like options
             tooltip.style.backgroundColor = color
             tooltip.style.color = "black"
             p.appendChild(tooltip)

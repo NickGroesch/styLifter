@@ -1,11 +1,11 @@
 window.addEventListener('DOMContentLoaded', (event) => {
 
   // Initialize button with users's prefered color
-  let $changeColor = document.getElementById("changeColor");
+  let $sampleSite = document.getElementById("sampleSite");
   let $openRecords = document.getElementById("openRecords");
 
   chrome.storage.sync.get("color", ({ color }) => {
-    $changeColor.style.backgroundColor = color;
+    $sampleSite.style.backgroundColor = color;
   });
 
   function onCreated(tab) {
@@ -18,7 +18,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 
   // When the button is clicked, inject setPageBackgroundColor into current page
-  $changeColor.addEventListener("click", async () => {
+  $sampleSite.addEventListener("click", async () => {
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
     chrome.scripting.executeScript({
@@ -45,10 +45,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
       cdns: [],
       props: []
     }
-    chrome.storage.sync.get("color", ({ color }) => {
+    chrome.storage.sync.get(["watch", "color", "samples"], ({ watch, samples, color }) => {
+      thisSample.watch = watch
       document.body.style.backgroundColor = color;
-    });
-    chrome.storage.sync.get(["watch", "samples"], ({ watch, samples }) => {
       console.log(watch)
       console.log(samples)
       const theCssRules = []
