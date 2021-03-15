@@ -60,6 +60,6 @@ chrome.runtime.onConnect.addListener(function (port) {
   port.onMessage.addListener(function (msg) {
     if (msg.gimme == "data")
       port.postMessage({ data: imgUrl });
-
+    console.log("data was sent")
   });
 });

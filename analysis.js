@@ -1,3 +1,4 @@
+//ICEBOX: This whole thing might be even cooler migrated to offscreen canvas api 
 window.addEventListener('DOMContentLoaded', (event) => {
 
     var postPort = chrome.runtime.connect({ name: "imagePlease" })
@@ -10,26 +11,50 @@ window.addEventListener('DOMContentLoaded', (event) => {
         canvas.height = image.height;
 
         var context = canvas.getContext('2d');
+        document.body.appendChild(canvas)
         context.drawImage(image, 0, 0);
 
         var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+        //https://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hexadecimal-in-javascript#:~:text=As%20the%20accepted%20answer%20states,toString(16)%20work%20correctly.
+        function rgb2hex(r, g, b) {
+            // if (g !== undefined)
+            return Number(0x1000000 + r * 0x10000 + g * 0x100 + b).toString(16).substring(1);
+            // else
+            //     return Number(0x1000000 + r[0] * 0x10000 + r[1] * 0x100 + r[2]).toString(16).substring(1);
+        }
 
+        const dataObject = {
+
+        }
         // Now you can access pixel data from imageData.data.
         // It's a one-dimensional array of RGBA values.
         // Here's an example of how to get a pixel's color at (x,y)
-        var x = 0;
-        var y = 0;
-        //for all x 
-        //for all y
-
-        var index = (y * imageData.width + x) * 4;
-        var red = imageData.data[index];
-        var green = imageData.data[index + 1];
-        var blue = imageData.data[index + 2];
-        var alpha = imageData.data[index + 3];
-
-        console.log([index, red, green, blue, alpha])
-
+        for (let y = 0; y <= imageData.height; y++) {
+            for (let x = 0; x <= imageData.width; x++) {
+                var index = (y * imageData.width + x) * 4;
+                var red = imageData.data[index];
+                var green = imageData.data[index + 1];
+                var blue = imageData.data[index + 2];
+                //var alpha = imageData.data[index + 3];
+                var hexcolor = rgb2hex(red, green, blue)
+                if (dataObject[hexcolor]) {
+                    dataObject[hexcolor] += 1
+                } else {
+                    dataObject[hexcolor] = 1
+                }
+                if (x % 101 == 0) {
+                    console.log(hexcolor)
+                }
+                //console.log([index, red, green, blue, alpha])
+            }
+        }
+        console.log(dataObject)
+        const sortArray = []
+        for (key in dataObject) {
+            sortArray.push({ count: dataObject[key], key: key })
+        }
+        sortArray.sort((a, b) => a.count < b.count ? 1 : -1)
+        console.log(sortArray)
     };
     postPort.postMessage({ gimme: "data" })
     postPort.onMessage.addListener(function (msg) {
