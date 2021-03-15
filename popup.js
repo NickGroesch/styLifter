@@ -51,7 +51,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
     chrome.storage.sync.get(["watch", "color", "samples"], ({ watch, samples, color }) => {
       thisSample.watch = watch
-      document.body.style.backgroundColor = color;
+      // document.body.style.backgroundColor = color;
       console.log(watch)
       console.log(samples)
       const theCssRules = []

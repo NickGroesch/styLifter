@@ -51,10 +51,18 @@ window.addEventListener('DOMContentLoaded', (event) => {
         console.log(dataObject)
         const sortArray = []
         for (key in dataObject) {
-            sortArray.push({ count: dataObject[key], key: key })
+            sortArray.push({ count: dataObject[key], key: `#${key}` })
         }
         sortArray.sort((a, b) => a.count < b.count ? 1 : -1)
         console.log(sortArray)
+        const top500 = sortArray.slice(0, 500)
+        top500.forEach(color => {
+            console.log(color)
+            const newDiv = document.createElement("button")
+            newDiv.style.backgroundColor = color.key
+            document.body.appendChild(newDiv)
+        })
+
     };
     postPort.postMessage({ gimme: "data" })
     postPort.onMessage.addListener(function (msg) {
