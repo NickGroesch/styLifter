@@ -1,5 +1,7 @@
 let $buttonDiv = document.getElementById("buttonDiv");
 let $tableDiv = document.getElementById("tableDiv");
+let $newTerm = document.getElementById("newTerm");
+let $termForm = document.getElementById("termForm");
 let selectedClassName = "current";
 const presetButtonColors = ["blue", "orangered", "aquamarine", "green"];
 let localState;
@@ -44,7 +46,7 @@ function constructOptions(buttonColors) {
     }
   });
 }
-
+//read
 makeWatchListInterfact()//also initializes local state array
 function makeWatchListInterfact() {
   chrome.storage.sync.get(["watch"], ({ watch }) => {
@@ -60,14 +62,33 @@ const renderWatchList = watchTerms => {
     </li>`
   }).join('')
 }
-
+//delete
 $tableDiv.addEventListener('click', event => { // Step 2
   if (event.target.className === 'deleteTerm') { // Step 3
     console.log('Kill this term!');
     // console.log(event.target.dataset.term); d
     localState.splice(localState.indexOf(event.target.dataset.term), 1)
     chrome.storage.sync.set({ watch: localState })
+    location.reload()
   }
 });
+
+//create
+$termForm.addEventListener('submit', e => {
+  e.preventDefault()
+  const text = $newTerm.value
+  localState.push(text.trim())
+  chrome.storage.sync.set({ watch: localState })
+  location.reload()
+  // fetch('/api/todos', {
+  //   method: 'POST',
+  //   body: JSON.stringify({ text }),
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   }
+  // })
+  //   .then(getTodos)
+  //   .catch(err => console.error(err))
+})
 // Initialize the page by constructing the color options
 constructOptions(presetButtonColors);
