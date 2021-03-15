@@ -3,7 +3,7 @@ let $tableDiv = document.getElementById("tableDiv");
 let $newTerm = document.getElementById("newTerm");
 let $termForm = document.getElementById("termForm");
 let selectedClassName = "current";
-const presetButtonColors = ["blue", "orangered", "aquamarine", "green"];
+const presetButtonColors = ["steelblue", "orchid", "seagreen", "tomato"];
 let localState;
 
 // Reacts to a button click by marking marking the selected button and saving
