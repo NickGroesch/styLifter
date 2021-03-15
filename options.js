@@ -2,6 +2,7 @@ let $buttonDiv = document.getElementById("buttonDiv");
 let $tableDiv = document.getElementById("tableDiv");
 let selectedClassName = "current";
 const presetButtonColors = ["blue", "orangered", "aquamarine", "green"];
+let localState;
 
 // Reacts to a button click by marking marking the selected button and saving
 // the selection
@@ -43,38 +44,30 @@ function constructOptions(buttonColors) {
     }
   });
 }
-makeWatchListInterfact()
+
+makeWatchListInterfact()//also initializes local state array
 function makeWatchListInterfact() {
   chrome.storage.sync.get(["watch"], ({ watch }) => {
-    const ul = document.createElement("ul")
-    ul.style.color = "white"
-    watch.forEach(term => {
-      const li = document.createElement("li")
-      li.textContent = term
-      ul.appendChild(li)
-    })
-    $tableDiv.appendChild(ul)
-
+    $tableDiv.innerHTML = renderWatchList(watch)
+    localState = watch
   })
 }
-
-function makeSampleList() {//TODO: This should move to a new page // might be harder than origianlly though
-  chrome.storage.sync.get(["samples", "color"], ({ samples, color }) => {
-    samples.forEach(element => {
-      console.log(element)
-      const p = document.createElement('p')
-      p.classList.add('tooltip')
-      p.textContent = element.location
-      const tooltip = document.createElement('div')
-      tooltip.classList.add('tooltiptext')
-      tooltip.textContent = "cool"
-      tooltip.style.backgroundColor = color
-      tooltip.style.color = "black"
-      p.appendChild(tooltip)
-      $tableDiv.appendChild(p);
-    });
-  })
+const renderWatchList = watchTerms => {
+  return watchTerms.map(term => {
+    return `<li class="m">
+      <span class="">${term}</span>
+      <button data-term="${term}" class="deleteTerm">x</button>
+    </li>`
+  }).join('')
 }
+
+$tableDiv.addEventListener('click', event => { // Step 2
+  if (event.target.className === 'deleteTerm') { // Step 3
+    console.log('Kill this term!');
+    // console.log(event.target.dataset.term); d
+    localState.splice(localState.indexOf(event.target.dataset.term), 1)
+    chrome.storage.sync.set({ watch: localState })
+  }
+});
 // Initialize the page by constructing the color options
 constructOptions(presetButtonColors);
-makeSampleList()

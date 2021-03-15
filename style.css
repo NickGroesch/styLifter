@@ -1,3 +1,10 @@
+body{
+  background-color: rgba(0, 0, 0, 1 );
+  color: white;
+}
+p, div{
+  color: white
+}
 button {
   height: 30px;
   width: 30px;
@@ -6,12 +13,7 @@ button {
   border: none;
   border-radius: 2px;
 }
-body{
-  background-color: rgba(0, 0, 0, 1 );
-}
-p{
-  color: white
-}
+
 button.current {
   box-shadow:
               0 0 0 2px black,
