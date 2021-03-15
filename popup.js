@@ -8,13 +8,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
     $sampleSite.style.backgroundColor = color;
   });
 
-  function onCreated(tab) {
-    console.log(`Created new tab: ${tab.id}`)
-  }
-
-  function onError(error) {
-    console.log(`Error: ${error}`);
-  }
 
 
   // When the button is clicked, inject setPageBackgroundColor into current page
@@ -28,15 +21,16 @@ window.addEventListener('DOMContentLoaded', (event) => {
     // console.log(capturePromise)
     // capturePromise.then(x => console.log(x)).catch(err => console.error(err))
   });
-
-  $openRecords.addEventListener("click", async () => { //TODO: this isn't working at all
+  const makeNewTab = (url) => {
+    const onCreated = (tab) => { console.log(`Created new tab: ${tab.id}`) }
+    const onError = (error) => { console.log(`makeNewTab Error: ${error}`); }
     // https://github.com/mdn/webextensions-examples/tree/master/store-collected-images/webextension-plain
-    var creating = chrome.tabs.create({
-      url: "/records.html"
-    });
+    const creating = chrome.tabs.create({ url })
     creating.then(onCreated, onError);
-    console.log("BANG")
-    //const tab = chrome.tabs.create({ 'url': "/records.html" })
+  }
+
+  $openRecords.addEventListener("click", async () => {
+    makeNewTab("/records.html")
   })
 
   // The body of this function will be execuetd as a content script inside the
@@ -47,6 +41,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
       console.log(response.woohoo);
       console.log(response.boohoo);
     });
+
+
 
     const thisSample = {
       location: location.href,
