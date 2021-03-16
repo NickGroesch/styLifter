@@ -3,7 +3,7 @@ let $tableDiv = document.getElementById("tableDiv");
 makeSampleList()
 
 function makeSampleList() {//TODO: This should move to a new page // might be harder than origianlly though
-    chrome.storage.sync.get(["samples", "color"], ({ samples, color }) => {
+    chrome.storage.local.get(["samples", "color"], ({ samples, color }) => {
         samples.forEach(element => {
             console.log(element)
 

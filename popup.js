@@ -4,7 +4,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
   let $sampleSite = document.getElementById("sampleSite");
   let $openRecords = document.getElementById("openRecords");
 
-  chrome.storage.sync.get("color", ({ color }) => {
+  chrome.storage.local.get("color", ({ color }) => {
     $sampleSite.style.backgroundColor = color;
   });
 
@@ -49,7 +49,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
       cdns: [],
       props: []
     }
-    chrome.storage.sync.get(["watch", "color", "samples"], ({ watch, samples, color }) => {
+    chrome.storage.local.get(["watch", "color", "samples"], ({ watch, samples, color }) => {
       thisSample.watch = watch
       // document.body.style.backgroundColor = color;
       console.log(watch)
@@ -127,7 +127,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
           }
           console.log(thisSample)
           samples.push(thisSample)
-          chrome.storage.sync.set({ samples: samples })
+          chrome.storage.local.set({ samples: samples })
         })
       }
 

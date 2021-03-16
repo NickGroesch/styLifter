@@ -20,12 +20,12 @@ function handleButtonClick(event) {
   // Mark the button as selected
   let color = event.target.dataset.color;
   event.target.classList.add(selectedClassName);
-  chrome.storage.sync.set({ color });
+  chrome.storage.local.set({ color });
 }
 
 // Add a button to the page for each supplied color
 function constructOptions(buttonColors) {
-  chrome.storage.sync.get("color", (data) => {
+  chrome.storage.local.get("color", (data) => {
     let currentColor = data.color;
 
     // For each color we were provided…
@@ -49,7 +49,7 @@ function constructOptions(buttonColors) {
 //read
 makeWatchListInterfact()//also initializes local state array
 function makeWatchListInterfact() {
-  chrome.storage.sync.get(["watch"], ({ watch }) => {
+  chrome.storage.local.get(["watch"], ({ watch }) => {
     $tableDiv.innerHTML = renderWatchList(watch)
     localState = watch
   })
@@ -68,7 +68,7 @@ $tableDiv.addEventListener('click', event => { // Step 2
     console.log('Kill this term!');
     // console.log(event.target.dataset.term); d
     localState.splice(localState.indexOf(event.target.dataset.term), 1)
-    chrome.storage.sync.set({ watch: localState })
+    chrome.storage.local.set({ watch: localState })
     location.reload()
   }
 });
@@ -78,7 +78,7 @@ $termForm.addEventListener('submit', e => {
   e.preventDefault()
   const text = $newTerm.value
   localState.push(text.trim())
-  chrome.storage.sync.set({ watch: localState })
+  chrome.storage.local.set({ watch: localState })
   location.reload()
   // fetch('/api/todos', {
   //   method: 'POST',

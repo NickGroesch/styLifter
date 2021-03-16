@@ -1,6 +1,6 @@
 let imgUrl = "";
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.sync.set({
+  chrome.storage.local.set({
     color: 'aquamarine',
     "watch": [
       "font-family",
