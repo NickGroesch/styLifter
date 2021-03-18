@@ -22,6 +22,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     function addToPalette(swatch) {
         palette.push(swatch)
         update$Palette()
+        bobRossSpeaks()
     }
     function removeFromPalette(swatch) {
         palette.splice(palette.indexOf(swatch), 1)
@@ -154,4 +155,5 @@ window.addEventListener('DOMContentLoaded', (event) => {
             console.log("loading image source", msg.href)
         }
     })
+    function bobRossSpeaks()
 })
