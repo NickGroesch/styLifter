@@ -7,9 +7,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
   chrome.storage.local.get("color", ({ color }) => {
     $sampleSite.style.backgroundColor = color;
   });
-
-
-
   // When the button is clicked, inject setPageBackgroundColor into current page
   $sampleSite.addEventListener("click", async () => {
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -21,10 +18,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
     // console.log(capturePromise)
     // capturePromise.then(x => console.log(x)).catch(err => console.error(err))
   });
+
   const makeNewTab = (url) => {
     const onCreated = (tab) => { console.log(`Created new tab: ${tab.id}`) }
     const onError = (error) => { console.log(`makeNewTab Error: ${error}`); }
-    // https://github.com/mdn/webextensions-examples/tree/master/store-collected-images/webextension-plain
     const creating = chrome.tabs.create({ url })
     creating.then(onCreated, onError);
   }
@@ -36,25 +33,25 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
   async function liftStyles() {
     chrome.runtime.sendMessage({ wants: "LIFTED" }, function (response) {
-      //console.log(response.farewell);
       console.log(response.woohoo);
       console.log(response.boohoo);
     });
 
 
 
-    const thisSample = {
-      location: location.href,
+    const thisLift = {
+      href: location.href,
       cdns: [],
       props: []
     }
     chrome.storage.local.get(["watch", "color", "samples"], ({ watch, samples, color }) => {
-      thisSample.watch = watch
+      thisLift.watch = watch
+      thisLift.when = Date.now()
       // document.body.style.backgroundColor = color;
       console.log(watch)
       console.log(samples)
-      const theCssRules = []
 
+      const theCssRules = []
       const linkNodes = document.querySelectorAll('link[rel=stylesheet]')
       linkNodes.forEach(async node => {
         console.log(node.getAttribute("href"))
@@ -62,7 +59,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
         if (nodesHref.slice(0, 5) == "https") {
           //probably cdn
-          thisSample.cdns.push(nodesHref)
+          thisLift.cdns.push(nodesHref)
           console.log("not gonna do it")
         } else {
           //probably local css
@@ -71,7 +68,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
           const cssLines = css.split("\n")
           console.log(cssLines)
           //this approach only works for politely formatted source css
-
+          //SO INSTEAD
           //parse minified or bundled css differently
           //from  https://stackoverflow.com/questions/3326494/parsing-css-in-javascript-jquery
           //You can easily use the Browser's own CSSOM to parse CSS:
@@ -115,7 +112,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
                 //add to results if watched
                 if (watch.includes(ruleKey)) {
-                  thisSample.props.push({
+                  thisLift.props.push({
                     key: ruleKey,
                     val: ruleVal,
                     selector: ruleSelector
@@ -124,8 +121,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
               }
             }
           }
-          console.log(thisSample)
-          samples.push(thisSample)
+          console.log(thisLift)
+          chrome.runtime.sendMessage({ sample: thisLift }, function (response) {
+            console.log(response.woohoo);
+            console.log(response.boohoo);
+          });
+          samples.push(thisLift)
           chrome.storage.local.set({ samples: samples })
         })
       }

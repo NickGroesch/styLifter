@@ -11,11 +11,12 @@ function createIndexedDB() {
     var db = e.target.result;
     const liftStore = db.createObjectStore("lift", { keyPath: "id", autoIncrement: true })
     const hrefIndex = liftStore.createIndex("href", "href", {})
-    const watchListIndex = liftStore.createIndex("watchlist", "watchlist", {})
+    const watchListIndex = liftStore.createIndex("watch", "watch", {})
 
-    analysisStore = db.createObjectStore("timepoints", { keyPath: "id", autoIncrement: true });
+    analysisStore = db.createObjectStore("analysis", { keyPath: "id", autoIncrement: true });
     const paletteIndex = analysisStore.createIndex("palette", "palette", {})
-    const liftIndex = analysisStore.createIndex("analysis", "analysis", {}) //"foreign key"
+    const liftIndex = analysisStore.createIndex("lift", "lift", {}) //"foreign key"
+    const hrefIndex2 = analysisStore.createIndex("href", "href", {})
   };
 }
 
@@ -28,8 +29,8 @@ function getAnalysisTransactionStore() {
   return transaction.objectStore('analysis')
 }
 
-let imgUrl = "";
-
+let imgUrl = ""; //WRONG for an event driven service worker
+let tabUrl = ""
 //self.addEventListener()
 
 chrome.runtime.onInstalled.addListener(() => {
@@ -52,18 +53,24 @@ chrome.runtime.onMessage.addListener( //on lift (capture) Popup
       "from a content script:" + sender.tab.url :
       "from the extension");
     console.log(sender.tab)
-    if (request.wants == "LIFTED") capTab(sendResponse)
+
+    if (request.wants == "LIFTED") {
+      capTab(sendResponse)
+      tabUrl = sender.tab.url
+    }
+    if (request.sample) addLift(request.sample)
 
   }
 );
 
 chrome.runtime.onConnect.addListener(function (port) { //new Analysis page GETS image data as base64url
   console.log('listening on the port', port)
-  console.assert(port.name == "imagePlease");
   port.onMessage.addListener(function (msg) {
-    if (msg.gimme == "data")
-      port.postMessage({ data: imgUrl });
-    console.log("data was sent")
+    if (msg.gimme == "data") port.postMessage({ data: imgUrl, href: tabUrl });
+    if (msg.analysis) {
+      console.log("got the message", msg)
+      addAnalysis(msg.analysis)
+    }
   });
 });
 
@@ -92,4 +99,14 @@ function capTab(responder) {
     console.log(`Error: ${error}`);
     responder({ boohoo: error })
   });
+}
+
+function addLift(sample) {
+  const liftStore = getliftTransactionStore()
+  liftStore.put(sample)
+}
+
+function addAnalysis(analysis) {
+  const analysisStore = getAnalysisTransactionStore()
+  analysisStore.put(analysis)
 }
