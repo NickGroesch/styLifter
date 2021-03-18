@@ -15,7 +15,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     chrome.scripting.executeScript({
       target: { tabId: tab.id },
-      function: setPageBackgroundColor,
+      function: liftStyles,
     });
     // const capturePromise = chrome.tabs.captureVisibleTab(tab.windowId, null, (dataUrl) => { console.log(dataUrl) });
     // console.log(capturePromise)
@@ -33,10 +33,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
     makeNewTab("/records.html")
   })
 
-  // The body of this function will be execuetd as a content script inside the
-  // current page
-  async function setPageBackgroundColor() {
-    chrome.runtime.sendMessage({ greeting: "hello" }, function (response) {
+
+  async function liftStyles() {
+    chrome.runtime.sendMessage({ wants: "LIFTED" }, function (response) {
       //console.log(response.farewell);
       console.log(response.woohoo);
       console.log(response.boohoo);
