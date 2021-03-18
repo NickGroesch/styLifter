@@ -68,11 +68,11 @@ chrome.runtime.onConnect.addListener(function (port) { //new Analysis page GETS 
   port.onMessage.addListener(function (msg) {
     if (msg.gimme == "data") port.postMessage({ data: imgUrl, href: tabUrl });
     if (msg.analysis) addAnalysis(msg.analysis)
-    if (msg.rossMe) {
-      console.log(msg.rossMe)
-      debugger
-      chrome.tts.speak(msg.rossMe)
-    }
+    // if (msg.rossMe) {
+    //   console.log(msg.rossMe)
+    //   debugger
+    //   chrome.tts.speak(msg.rossMe)
+    // }
   });
 });
 

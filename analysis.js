@@ -158,6 +158,15 @@ window.addEventListener('DOMContentLoaded', (event) => {
     function bobRossSpeaks() {
         const randomQuote = bobross[Math.floor(Math.random() * bobross.length)]
         console.log(randomQuote)
-        postPort.postMessage({ rossMe: randomQuote })
+        var utterance = new SpeechSynthesisUtterance();
+        utterance.text = randomQuote;
+
+        // optional parameters
+        utterance.lang = 'en-AU'; // language, default is 'en-US'
+        utterance.volume = 0.5;   // volume, from 0 to 1, default is 1
+        utterance.rate = 0.8;
+        window.speechSynthesis.speak(utterance);
+
+        // postPort.postMessage({ rossMe: randomQuote })
     }
 })
