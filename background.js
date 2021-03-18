@@ -67,10 +67,7 @@ chrome.runtime.onConnect.addListener(function (port) { //new Analysis page GETS 
   console.log('listening on the port', port)
   port.onMessage.addListener(function (msg) {
     if (msg.gimme == "data") port.postMessage({ data: imgUrl, href: tabUrl });
-    if (msg.analysis) {
-      console.log("got the message", msg)
-      addAnalysis(msg.analysis)
-    }
+    if (msg.analysis) addAnalysis(msg.analysis)
   });
 });
 

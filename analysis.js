@@ -55,13 +55,14 @@ window.addEventListener('DOMContentLoaded', (event) => {
             sortArray.push({ count: dataObject[key], key: `#${key}` })
         }
         sortArray.sort((a, b) => a.count < b.count ? 1 : -1)
-        console.log(sortArray)
+        console.log(sortArray.length)
         const top500 = sortArray.slice(0, 500)
 
         top500.forEach(color => {
             // console.log(color)
             const swatch = document.createElement("button")
             swatch.classList.add("swatch")
+            swatch.dataset.swatch = color.key
             swatch.style.backgroundColor = color.key
             $swatches.appendChild(swatch)
         })
@@ -71,12 +72,18 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 top500,
                 source: image.src,
                 dimensions: [imageData.width, imageData.height],
+                length: sortArray.length,
                 when: Date.now()
             }
         })
-        // $swatches.addEventListener("click", () => {
-
-        // })
+        $swatches.addEventListener("click", (event) => {
+            if (event.target.classList.contains('swatch')) { // Step 3
+                console.log(event.target.dataset.swatch);
+                const color = event.target.dataset.swatch
+                event.target.classList.toggle("selected")
+                //paletteToggle(color)
+            }
+        })
         console.log('did we send the message?')
     };
     postPort.postMessage({ gimme: "data" })
