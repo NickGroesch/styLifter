@@ -29,7 +29,17 @@ button.current {
   display: inline-block;
   border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
 }
+#image{
+  /* position: relative; */
+  width: 100%
+}
+/* #swatches{
 
+} */
+#paints{
+  z-index: 2;
+  position: absolute
+}
 /* Tooltip text */
 .tooltip .tooltiptext {
   visibility: hidden;
