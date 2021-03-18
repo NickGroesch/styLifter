@@ -22,13 +22,14 @@ window.addEventListener('DOMContentLoaded', (event) => {
     function addToPalette(swatch) {
         palette.push(swatch)
         update$Palette()
-        bobRossSpeaks()
+        // bobRossSpeaks() //I dont' know if this is really a feature, but it was fun
     }
     function removeFromPalette(swatch) {
         palette.splice(palette.indexOf(swatch), 1)
         update$Palette()
     }
     function update$Palette() {
+        postPort.postMessage({ palette: palette, sourceHref: sourceHref })
         $paints.innerHTML = ""
         palette.forEach(color => {
             const swatch = document.createElement("button")
@@ -155,6 +156,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             console.log("loading image source", msg.href)
         }
     })
+
     function bobRossSpeaks() {
         const randomQuote = bobross[Math.floor(Math.random() * bobross.length)]
         console.log(randomQuote)
@@ -162,9 +164,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
         utterance.text = randomQuote;
 
         // optional parameters
-        utterance.lang = 'en-AU'; // language, default is 'en-US'
-        utterance.volume = 0.5;   // volume, from 0 to 1, default is 1
-        utterance.rate = 0.8;
+        utterance.lang = 'en-GB'; // if bob ross were a british computer
+        utterance.volume = 0.2;   // he wouldn't overwhelm with volume
+        utterance.rate = 0.7; //  cause he's chill
         window.speechSynthesis.speak(utterance);
 
         // postPort.postMessage({ rossMe: randomQuote })

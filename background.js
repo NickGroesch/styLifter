@@ -9,23 +9,54 @@ function createIndexedDB() {
   }
   indexDBplease.onupgradeneeded = e => {
     var db = e.target.result;
-    const liftStore = db.createObjectStore("lift", { keyPath: "id", autoIncrement: true })
+    const liftStore = db.createObjectStore("lift", {
+      // keyPath: "id",  autoIncrement: true 
+      keyPath: "href"
+    })
     const hrefIndex = liftStore.createIndex("href", "href", {})
     const watchListIndex = liftStore.createIndex("watch", "watch", {})
 
-    analysisStore = db.createObjectStore("analysis", { keyPath: "id", autoIncrement: true });
+    analysisStore = db.createObjectStore("analysis", {
+      keyPath: "href"
+      //  keyPath: "id", autoIncrement: true 
+    });
     const paletteIndex = analysisStore.createIndex("palette", "palette", {})
     const liftIndex = analysisStore.createIndex("lift", "lift", {}) //"foreign key"
     const hrefIndex2 = analysisStore.createIndex("href", "href", {})
   };
 }
 
+function getIDB() {
+  const indexDBplease = self.indexedDB.open('styLifter')
+  indexDBplease.onerror = e => { console.error(e.target.errorCode) }
+  indexDBplease.onsuccess = e => {
+    db = e.target.result
+    console.log(e.target)
+  }
+}
+
 function getliftTransactionStore() {
+  if (!db) {
+    console.log('there is no db')
+    //db = getIDB
+  }
   const transaction = db.transaction(['lift'], 'readwrite')
+  transaction.oncomplete = function (event) {
+  };
+  transaction.onerror = function (event) {
+    console.log(transaction.error)
+  };
   return transaction.objectStore('lift')
 }
+
 function getAnalysisTransactionStore() {
+  // const db = self.indexedDB.open('styLifter')
   const transaction = db.transaction(['analysis'], 'readwrite')
+  transaction.oncomplete = function (event) {
+  };
+  transaction.onerror = function (event) {
+    console.log(transaction.error)
+  };
   return transaction.objectStore('analysis')
 }
 
@@ -68,6 +99,7 @@ chrome.runtime.onConnect.addListener(function (port) { //new Analysis page GETS 
   port.onMessage.addListener(function (msg) {
     if (msg.gimme == "data") port.postMessage({ data: imgUrl, href: tabUrl });
     if (msg.analysis) addAnalysis(msg.analysis)
+    if (msg.palette) updateAnalysis(msg.sourceHref, msg.palette)
     // if (msg.rossMe) {
     //   console.log(msg.rossMe)
     //   debugger
@@ -111,4 +143,31 @@ function addLift(sample) {
 function addAnalysis(analysis) {
   const analysisStore = getAnalysisTransactionStore()
   analysisStore.put(analysis)
+}
+
+function updateAnalysis(href, palette) {
+  console.log(href, palette)
+  const analysisStore = getAnalysisTransactionStore()
+  console.log(analysisStore)
+  const newCursor = analysisStore.openCursor(href)
+
+  newCursor.onsuccess = event => {
+    const cursor = event.target.result;
+
+    const updateData = cursor.value
+    updateData.palette = palette
+    console.log(updateData)
+    const cursorRequest = cursor.update(updateData)
+
+    cursorRequest.onsuccess = function (event) {
+      console.log("DId it work?")
+    }
+    cursorRequest.onerror = function (event) {
+      console.log("it didn't work?")
+    }
+
+  }
+
+  // analysisStore.get({})
+  // analysisStore.put(analysis)
 }
