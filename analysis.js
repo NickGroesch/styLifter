@@ -155,5 +155,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
             console.log("loading image source", msg.href)
         }
     })
-    function bobRossSpeaks()
+    function bobRossSpeaks() {
+        const randomQuote = bobross[Math.floor(Math.random() * bobross.length)]
+        console.log(randomQuote)
+        postPort.postMessage({ rossMe: randomQuote })
+    }
 })

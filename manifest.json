@@ -11,7 +11,8 @@
     "activeTab",
     "scripting",
     "tabs",
-    "unlimitedStorage"
+    "unlimitedStorage",
+    "tts"
   ],
   "action": {
     "default_popup": "popup.html",
