@@ -15,14 +15,14 @@ function createIndexedDB() {
     })
     const hrefIndex = liftStore.createIndex("href", "href", {})
     const watchListIndex = liftStore.createIndex("watch", "watch", {})
+    const paletteIndex = liftStore.createIndex("palette", "palette", {})
 
-    analysisStore = db.createObjectStore("analysis", {
-      keyPath: "href"
-      //  keyPath: "id", autoIncrement: true 
-    });
-    const paletteIndex = analysisStore.createIndex("palette", "palette", {})
-    const liftIndex = analysisStore.createIndex("lift", "lift", {}) //"foreign key"
-    const hrefIndex2 = analysisStore.createIndex("href", "href", {})
+    // analysisStore = db.createObjectStore("analysis", {
+    //   keyPath: "href"
+    //   //  keyPath: "id", autoIncrement: true 
+    // });
+    // const liftIndex = analysisStore.createIndex("lift", "lift", {}) //"foreign key"
+    // const hrefIndex2 = analysisStore.createIndex("href", "href", {})
   };
   return db
 }
@@ -80,24 +80,24 @@ async function getLiftTransactionStore() {
   return transaction.objectStore('lift')
 }
 
-async function getAnalysisTransactionStore() {
-  console.log(db)
-  if (db === null) {
-    console.log('there is no db')
-    db = await getIDB()
-  } else {
-    console.log('there is db')
-    console.log(db)
-  }
-  const transaction = db.transaction(['analysis'], 'readwrite')
-  transaction.oncomplete = function (event) {
-    console.log('analysis transaction complete', event)
-  };
-  transaction.onerror = function (event) {
-    console.log(event)
-  };
-  return transaction.objectStore('analysis')
-}
+// async function getAnalysisTransactionStore() {
+//   console.log(db)
+//   if (db === null) {
+//     console.log('there is no db')
+//     db = await getIDB()
+//   } else {
+//     console.log('there is db')
+//     console.log(db)
+//   }
+//   const transaction = db.transaction(['analysis'], 'readwrite')
+//   transaction.oncomplete = function (event) {
+//     console.log('analysis transaction complete', event)
+//   };
+//   transaction.onerror = function (event) {
+//     console.log(event)
+//   };
+//   return transaction.objectStore('analysis')
+// }
 
 let imgUrl = ""; //WRONG for an event driven service worker
 let tabUrl = ""
@@ -199,21 +199,17 @@ async function addLift(sample) {
 }
 
 async function addAnalysis(analysis) {
-  const analysisStore = await getAnalysisTransactionStore()
-  analysisStore.put(analysis)
-}
-
-async function updateAnalysis(href, palette) {
-  console.log(href, palette)
-  const analysisStore = await getAnalysisTransactionStore()
-  console.log(analysisStore)
-  const newCursor = analysisStore.openCursor(href)
+  // const analysisStore = await getAnalysisTransactionStore()
+  // analysisStore.put(analysis)
+  const liftStore = await getLiftTransactionStore()
+  const newCursor = liftStore.openCursor(analysis.href)
 
   newCursor.onsuccess = event => {
     const cursor = event.target.result;
-    console.log("where is the cursor", cursor)
+    console.log("where is the analysis cursor", cursor)
     const updateData = cursor.value
-    updateData.palette = palette
+    updateData.analysis = analysis
+    //updateData.palette = analysis.palette
     console.log(updateData)
     const cursorRequest = cursor.update(updateData)
 
@@ -225,7 +221,29 @@ async function updateAnalysis(href, palette) {
     }
 
   }
+}
 
+async function updateAnalysis(href, palette) {
+  console.log(href, palette)
+  const liftStore = await getLiftTransactionStore()
+  console.log(liftStore)
+  const newCursor = liftStore.openCursor(href)
+
+  newCursor.onsuccess = event => {
+    const cursor = event.target.result;
+    console.log("where is the palette cursor", cursor)
+    const updateData = cursor.value
+    updateData.palette = palette
+    console.log(updateData)
+    const cursorRequest = cursor.update(updateData)
+
+    cursorRequest.onsuccess = function (event) {
+      console.log("we put the analysis?")
+    }
+    cursorRequest.onerror = function (event) {
+      console.log("put analysis error?")
+    }
+  }
   // analysisStore.get({})
   // analysisStore.put(analysis)
 }
