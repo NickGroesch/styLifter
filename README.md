@@ -1,4 +1,4 @@
-# styLifter
+# styLifter StolOne
 
 ## its a chrome extension! 
 

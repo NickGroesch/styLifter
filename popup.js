@@ -33,8 +33,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
   async function liftStyles() {
     chrome.runtime.sendMessage({ wants: "LIFTED" }, function (response) {
-      console.log(response.woohoo);
-      console.log(response.boohoo);
+      //console.log(response.woohoo);
+      //console.log(response.boohoo);
     });
 
 

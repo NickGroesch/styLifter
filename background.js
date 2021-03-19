@@ -129,6 +129,9 @@ chrome.runtime.onMessage.addListener( //on lift (capture) Popup
       capTab(sendResponse)
       tabUrl = sender.tab.url
     }
+    // if (request.wants == "ALL") {
+    //   send
+    // }
     if (request.sample) addLift(request.sample)
 
   }
@@ -140,7 +143,11 @@ chrome.runtime.onConnect.addListener(function (port) { //new Analysis page GETS 
   port.onMessage.addListener(function (msg) {
     console.log("port; msg", port, msg)
     if (msg.gimme == "data") {
-      port.postMessage({ data: imgUrl, href: tabUrl });
+      port.postMessage({ data: imgUrl, href: tabUrl });//UNSTABLE potentially
+    }
+    if (msg.gimme == "records") {
+      console.log("getting it")
+      getAllData(port)
     }
     if (msg.analysis) {
       console.log(msg.analysis)
@@ -221,4 +228,14 @@ async function updateAnalysis(href, palette) {
 
   // analysisStore.get({})
   // analysisStore.put(analysis)
+}
+async function getAllData(port) {
+  const liftStore = await getLiftTransactionStore()
+  const request = liftStore.getAll()
+  console.log('req', request)
+  request.onsuccess = event => {
+    console.log("sults", request.result)
+    console.log(port)
+    port.postMessage({ records: request.result })
+  }
 }
