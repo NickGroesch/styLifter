@@ -121,13 +121,14 @@ window.addEventListener('DOMContentLoaded', (event) => {
               }
             }
           }
-          console.log(thisLift)
+          console.log("toLift", thisLift)
           chrome.runtime.sendMessage({ sample: thisLift }, function (response) {
-            console.log(response.woohoo);
-            console.log(response.boohoo);
+            console.log(response);
+            //console.log(response.woohoo);
+            //console.log(response.boohoo);
           });
-          samples.push(thisLift)
-          chrome.storage.local.set({ samples: samples })
+          //samples.push(thisLift)
+          //chrome.storage.local.set({ samples: samples })
         })
       }
 

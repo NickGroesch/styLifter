@@ -110,14 +110,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
         console.log(sortArray.length)
         const top500 = sortArray.slice(0, 500)
 
-        top500.forEach(color => {
-            // console.log(color)
-            const swatch = document.createElement("button")
-            swatch.classList.add("swatch")
-            swatch.dataset.swatch = color.key
-            swatch.style.backgroundColor = color.key
-            $swatches.appendChild(swatch)
-        })
         postPort.postMessage({
             analysis: {
                 href: sourceHref,
@@ -127,6 +119,16 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 length: sortArray.length,
                 when: Date.now()
             }
+        })
+        console.log('did we send the message?')
+
+        top500.forEach(color => {
+            // console.log(color)
+            const swatch = document.createElement("button")
+            swatch.classList.add("swatch")
+            swatch.dataset.swatch = color.key
+            swatch.style.backgroundColor = color.key
+            $swatches.appendChild(swatch)
         })
 
         $swatches.addEventListener("click", (event) => {
@@ -145,7 +147,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 //paletteToggle(color)
             }
         })
-        console.log('did we send the message?')
     };
     postPort.postMessage({ gimme: "data" })
     postPort.onMessage.addListener(function (msg) {
