@@ -36,13 +36,15 @@ function showRecords(recs) {
         return accum + `<div style='width:300px;height:300px;' class='selected'>
         <h2> <a href="${siteData.href}" target="_blank">${siteData.href}</a></h2>
         <ul>${siteData.watch.reduce((accum, curr) => {
-            return accum + `<li> 
+            return accum + `<li class="tooltip"> 
             &#128064; ${curr} &#128064; 
+            <div class="tooltiptext">${Object.keys(siteData.watchMap[curr])} 
+            </div>
             </li>`
         }, "")}
         </ul>
         ${siteData.palette.reduce((accum, curr) => {
-            console.log(accum, curr)//TODO:it could be nice to analyze which color to use programatially for sufficient contrast
+            //console.log(accum, curr)//TODO:it could be nice to analyze which color to use programatially for sufficient contrast
             return accum + `<button style='background-color:${curr};'>
             ${curr}
             </button>`

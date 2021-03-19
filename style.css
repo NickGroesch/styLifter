@@ -31,21 +31,21 @@ button.current {
               0 0 0 2px black,
               0 0 0 4px white;
 }
-.tooltip {
-  position: relative;
-  display: inline-block;
-  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
-}
 #image{
   /* position: relative; */
   width: 100%
 }
 /* #swatches{
-
+  
 } */
 #paints{
   z-index: 2;
   position: absolute
+}
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
 }
 /* Tooltip text */
 .tooltip .tooltiptext {
