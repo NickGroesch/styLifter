@@ -15,8 +15,24 @@ function makeSampleList() {
 
 function showRecords(recs) {
     //TODO: add tooltips of watched values
+    recs.forEach(siteData => {
+        const thisSite = {}
+        for (term of siteData.watch) {
+            thisSite[term] = {}
+        }
+        for (prop of siteData.props) {
+            const { key, val, selector } = prop
+            if (thisSite[key][val]) {
+                thisSite[key][val].push(selector)
+            } else {
+                thisSite[key][val] = [selector]
+            }
+        }
+        siteData.watchMap = thisSite
+    })
 
     const cardHTML = recs.reduce((accum, siteData) => {
+        console.log(siteData)
         return accum + `<div style='width:300px;height:300px;' class='selected'>
         <h2> <a href="${siteData.href}" target="_blank">${siteData.href}</a></h2>
         <ul>${siteData.watch.reduce((accum, curr) => {
@@ -26,7 +42,7 @@ function showRecords(recs) {
         }, "")}
         </ul>
         ${siteData.palette.reduce((accum, curr) => {
-            console.log(accum, curr)
+            console.log(accum, curr)//TODO:it could be nice to analyze which color to use programatially for sufficient contrast
             return accum + `<button style='background-color:${curr};'>
             ${curr}
             </button>`
