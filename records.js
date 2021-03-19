@@ -14,16 +14,22 @@ function makeSampleList() {
 }
 
 function showRecords(recs) {
+    //recs.unshift("")
     const cardHTML = recs.reduce((accum, siteData) => {
         return accum + `<div style='width:300px;height:300px;'>
-        <h2>${siteData.href}</h2>
+        <h2> <a href="${siteData.href}">${siteData.href}</a></h2>
         <ul>${siteData.watch.reduce((accum, curr) => {
-            return accum + `<li>${curr}</li>`
+            return accum + `<li> 
+            &#128064; ${curr} &#128064; 
+            </li>`
         }, "")}
         </ul>
         ${siteData.palette.reduce((accum, curr) => {
-            return accum + `<button style='background-color:${curr};'>${curr}</button>`
-        })}
+            console.log(accum, curr)
+            return accum + `<button style='background-color:${curr};'>
+            ${curr}
+            </button>`
+        }, "")}
         </div>`
     }, "")
     $tableDiv.innerHTML = (cardHTML)
