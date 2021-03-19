@@ -50,6 +50,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
         var context = canvas.getContext('2d');
         $image.appendChild(canvas)
         const painters = document.createElement("img")
+        //TODO: https://www.w3schools.com/howto/howto_js_draggable.asp
         //$palette = painters
         painters.src = "/images/palette.png"
         painters.width = "200px"

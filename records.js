@@ -14,10 +14,11 @@ function makeSampleList() {
 }
 
 function showRecords(recs) {
-    //recs.unshift("")
+    //TODO: add tooltips of watched values
+
     const cardHTML = recs.reduce((accum, siteData) => {
-        return accum + `<div style='width:300px;height:300px;'>
-        <h2> <a href="${siteData.href}">${siteData.href}</a></h2>
+        return accum + `<div style='width:300px;height:300px;' class='selected'>
+        <h2> <a href="${siteData.href}" target="_blank">${siteData.href}</a></h2>
         <ul>${siteData.watch.reduce((accum, curr) => {
             return accum + `<li> 
             &#128064; ${curr} &#128064; 
