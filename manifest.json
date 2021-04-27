@@ -18,17 +18,17 @@
     "default_popup": "popup.html",
     "default_title": "styLifter",
     "default_icon": {
-      "16": "/images/get_started16.png",
-      "32": "/images/get_started32.png",
-      "48": "/images/get_started48.png",
-      "128": "/images/get_started128.png"
+      "16": "/images/footballhead16.png",
+      "32": "/images/footballhead32.png",
+      "48": "/images/footballhead48.png",
+      "128": "/images/footballhead128.png"
     }
   },
   "icons": {
-    "16": "/images/get_started16.png",
-    "32": "/images/get_started32.png",
-    "48": "/images/get_started48.png",
-    "128": "/images/get_started128.png"
+    "16": "/images/footballhead16.png",
+    "32": "/images/footballhead32.png",
+    "48": "/images/footballhead48.png",
+    "128": "/images/footballhead128.png"
   },
   "options_page": "options.html",
   "web_accessible_resources": [
