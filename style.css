@@ -22,8 +22,7 @@ h2{
   font-size: 20px;
 }
 .selected{
-  border: 5px dashed greenyellow;
-  border-color: red green blue yellow;
+  border: 5px dashed rgb(70, 52, 5);
 }
 
 button.current {

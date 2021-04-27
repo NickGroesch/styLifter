@@ -29,6 +29,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     // https://www.base64-image.de/
     var image = new Image();
     var sourceHref = "";
+    var imageSource = "";
     image.onload = function () {
         var canvas = document.createElement('canvas');
         //canvas.style.position = "absolute"
@@ -103,7 +104,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             analysis: {
                 href: sourceHref,
                 top500,
-                source: image.src,
+                source: imageSource,
                 dimensions: [imageData.width, imageData.height],
                 length: sortArray.length,
                 when: Date.now()
@@ -142,6 +143,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
         console.log(msg)
         if (msg.data) {
             image.src = msg.data
+            imageSource = msg.data
             sourceHref = msg.href
             console.log("loading image source", msg.href)
         }
@@ -195,6 +197,5 @@ window.addEventListener('DOMContentLoaded', (event) => {
             element.onmouseup = null
         }
     }
-
     makeDraggable($palette)
 })
