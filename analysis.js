@@ -1,15 +1,3 @@
-// let palette = [];
-// function addToPalette(swatch) {
-//     palette.push(swatch)
-//     // if (pallete.includes(swatch)) {
-//     //     //nada
-//     // } else {
-//     //     palette.push(swatch)
-//     // }
-// }
-// function removeFromPalette(swatch) {
-//     palette.splice(palette.indexOf(swatch), 1)
-// }
 //ICEBOX: This whole thing might be even cooler migrated to offscreen canvas api 
 window.addEventListener('DOMContentLoaded', (event) => {
     const $swatches = document.getElementById('swatches')
@@ -173,4 +161,40 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
         // postPort.postMessage({ rossMe: randomQuote })
     }
+
+    function makeDraggable(element) {
+        let x1 = y1 = x2 = y2 = 0;
+        element.onmousedown = dragDown
+        function dragDown(e) {
+            console.log("got me")
+            e.preventDefault()
+            x2 = e.clientX
+            y2 = e.clientY
+            element.onmouseup = finishDrag
+            element.onmousemove = dragAbout
+        }
+        function dragAbout(e) {
+            console.log(x1, y1, x2, y2)
+            e.preventDefault()
+            x1 = x2 - e.clientX
+            y1 = y2 - e.clientY
+            x2 = e.clientX
+            y2 = e.clientY
+            const oldTop = element.style.top
+            const trimTop = oldTop.substring(0, oldTop.length - 2)
+            const newTop = (parseInt(trimTop) - y1) + "px"
+            element.style.top = newTop
+            const oldLeft = element.style.left
+            const trimLeft = oldLeft.substring(0, oldLeft.length - 2)
+            const newLeft = (parseInt(trimLeft) - x1) + "px"
+            element.style.left = newLeft
+        }
+        function finishDrag() {
+            console.log("done")
+            element.onmousemove = null
+            element.onmouseup = null
+        }
+    }
+
+    makeDraggable($palette)
 })
