@@ -54,7 +54,7 @@ function makeWatchListInterfact() {
     localState = watch
   })
 }
-const renderWatchList = watchTerms => {
+const renderWatchList = watchTerms => { //TODO: make this 
   return watchTerms.map(term => {
     return `<li class="m">
       <span class="">${term}</span>
@@ -62,6 +62,7 @@ const renderWatchList = watchTerms => {
     </li>`
   }).join('')
 }
+
 //delete
 $tableDiv.addEventListener('click', event => { // Step 2
   if (event.target.className === 'deleteTerm') { // Step 3
@@ -90,5 +91,6 @@ $termForm.addEventListener('submit', e => {
   //   .then(getTodos)
   //   .catch(err => console.error(err))
 })
+
 // Initialize the page by constructing the color options
 constructOptions(presetButtonColors);

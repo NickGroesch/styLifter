@@ -202,25 +202,30 @@ async function addAnalysis(analysis) {
   // const analysisStore = await getAnalysisTransactionStore()
   // analysisStore.put(analysis)
   const liftStore = await getLiftTransactionStore()
-  const newCursor = liftStore.openCursor(analysis.href)
+  console.log(analysis)
+  liftStore.add(analysis)
+  // const newCursor = liftStore.openCursor(analysis.href)
 
-  newCursor.onsuccess = event => {
-    const cursor = event.target.result;
-    console.log("where is the analysis cursor", cursor)
-    const updateData = cursor.value
-    updateData.analysis = analysis
-    //updateData.palette = analysis.palette
-    console.log(updateData)
-    const cursorRequest = cursor.update(updateData)
+  // newCursor.onsuccess = event => {
+  //   const cursor = event.target.result;
+  //   console.log("where is the analysis cursor", cursor)
+  //   const updateData = cursor.value
+  //   updateData.analysis = analysis
+  //   //updateData.palette = analysis.palette
+  //   console.log(updateData)
+  //   const cursorRequest = cursor.update(updateData)
 
-    cursorRequest.onsuccess = function (event) {
-      console.log("we put the palette?")
-    }
-    cursorRequest.onerror = function (event) {
-      console.log("put pallete error?")
-    }
+  //   cursorRequest.onsuccess = function (event) {
+  //     console.log("we put the palette?")
+  //   }
+  //   cursorRequest.onerror = function (event) {
+  //     console.log("put pallete error?")
+  //   }
 
-  }
+  // }
+  // newCursor.onError = event => {
+  //   console.error(event)
+  // }
 }
 
 async function updateAnalysis(href, palette) {

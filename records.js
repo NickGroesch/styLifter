@@ -17,31 +17,33 @@ function showRecords(recs) {
     //TODO: add tooltips of watched values
     recs.forEach(siteData => {
         const thisSite = {}
-        for (term of siteData.watch) {
-            thisSite[term] = {}
-        }
-        for (prop of siteData.props) {
-            const { key, val, selector } = prop
-            if (thisSite[key][val]) {
-                thisSite[key][val].push(selector)
-            } else {
-                thisSite[key][val] = [selector]
+        if (siteData.watch) {
+            for (term of siteData.watch) {
+                thisSite[term] = {}
+            }
+            for (prop of siteData.props) {
+                const { key, val, selector } = prop
+                if (thisSite[key][val]) {
+                    thisSite[key][val].push(selector)
+                } else {
+                    thisSite[key][val] = [selector]
+                }
             }
         }
         siteData.watchMap = thisSite
     })
 
-    const cardHTML = recs.reduce((accum, siteData) => {
+    const cardHTML = recs.reduce((accum, siteData) => { //TODO: like playing trombone, just because you can do it with reduce doesn't mean you should
         console.log("%ccanYouDigIt?", "color: orangered", siteData)
-        return accum + `<div style='width:300px;height:300px;' class='selected'>
-        <h2> <a href="${siteData.href}" target="_blank">${siteData.href}</a></h2>
-        <ul>${siteData.watch.reduce((accum, curr) => {
+        return accum + `<div style='width:100%;height:300px;' class='selected'>
+        <h2> <a style="width:100%;" href="${siteData.href}" target="_blank">${siteData.href}</a></h2>
+        <ul>${siteData.watch ? siteData.watch.reduce((accum, curr) => {
             return accum + `<li class="tooltip"> 
             &#128064; ${curr} &#128064; 
             <div class="tooltiptext">${Object.keys(siteData.watchMap[curr])} 
             </div>
             </li>`
-        }, "")}
+        }, "") : "nothing to see here"}
         </ul>
         ${siteData.palette.reduce((accum, curr) => {
             //https://stackoverflow.com/questions/3942878/how-to-decide-font-color-in-white-or-black-depending-on-background-color
